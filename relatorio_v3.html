@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Diário de Segurança v3.0</title>
+    <link rel="stylesheet" href="styles_v3.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER COM BARRA DE PROGRESSO -->
+        <div class="header">
+            <h1>🛡️ RELATÓRIO DIÁRIO DE SEGURANÇA</h1>
+            <p>Sistema Digital de Gestão de Segurança Hoteleira - Versão 3.0</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar">
+                    <span id="progressText">0%</span>
+                </div>
+            </div>
+            <div class="auto-save-indicator" id="autoSaveIndicator">
+                <span class="save-icon">💾</span>
+                <span id="saveStatus">Pronto para salvar</span>
+            </div>
+        </div>
+
+        <!-- NAVEGAÇÃO POR ABAS -->
+        <div class="tabs-navigation">
+            <button class="tab-btn active" data-tab="identificacao">
+                <span class="tab-icon">📋</span>
+                <span class="tab-label">Identificação</span>
+            </button>
+            <button class="tab-btn" data-tab="equipe">
+                <span class="tab-icon">👥</span>
+                <span class="tab-label">Equipe</span>
+            </button>
+            <button class="tab-btn" data-tab="rondas">
+                <span class="tab-icon">🚶</span>
+                <span class="tab-label">Rondas</span>
+            </button>
+            <button class="tab-btn" data-tab="ocorrencias">
+                <span class="tab-icon">📝</span>
+                <span class="tab-label">Ocorrências</span>
+            </button>
+            <button class="tab-btn" data-tab="controles">
+                <span class="tab-icon">🔒</span>
+                <span class="tab-label">Controles</span>
+            </button>
+            <button class="tab-btn" data-tab="aprovacoes">
+                <span class="tab-icon">✍️</span>
+                <span class="tab-label">Aprovações</span>
+            </button>
+        </div>
+
+        <!-- FORMULÁRIO -->
+        <form id="relatorioForm">
+            <!-- ABA 1: IDENTIFICAÇÃO -->
+            <div class="tab-content active" id="tab-identificacao">
+                <div class="section">
+                    <div class="section-title">📋 IDENTIFICAÇÃO DO RELATÓRIO</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Data <span class="required">*</span></label>
+                            <input type="date" id="dataRelatorio" name="dataRelatorio" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Dia da Semana <span class="auto-calc">(Auto)</span></label>
+                            <input type="text" id="diaSemana" name="diaSemana" readonly>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Turno <span class="required">*</span></label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="turno" value="diurno" required>
+                                    <span>☀️ Diurno (07h-19h)</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="turno" value="noturno">
+                                    <span>🌙 Noturno (19h-07h)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Condições Climáticas <span class="required">*</span></label>
+                            <select id="clima" name="clima" required>
+                                <option value="">Selecione...</option>
+                                <option value="bom">☀️ Bom</option>
+                                <option value="chuva">🌧️ Chuva</option>
+                                <option value="nublado">☁️ Nublado</option>
+                                <option value="vento">💨 Vento Forte</option>
+                                <option value="outros">🌤️ Outros</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 2: EQUIPE -->
+            <div class="tab-content" id="tab-equipe">
+                <div class="section">
+                    <div class="section-title">👥 EQUIPE DE SERVIÇO</div>
+                    
+                    <h3 class="subsection-title">Turno Diurno (07h-19h)</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Supervisor Diurno - Nr. Mec. <span class="required">*</span></label>
+                            <input type="text" id="supDiurnoMec" name="supDiurnoMec" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nome Completo <span class="required">*</span></label>
+                            <input type="text" id="supDiurnoNome" name="supDiurnoNome" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Operador CCTV Diurno - Nr. Mec. <span class="required">*</span></label>
+                            <input type="text" id="cctvDiurnoMec" name="cctvDiurnoMec" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nome Completo <span class="required">*</span></label>
+                            <input type="text" id="cctvDiurnoNome" name="cctvDiurnoNome" required>
+                        </div>
+                    </div>
+
+                    <h3 class="subsection-title">Turno Noturno (19h-07h)</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Supervisor Noturno - Nr. Mec. <span class="required">*</span></label>
+                            <input type="text" id="supNoturnoMec" name="supNoturnoMec" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nome Completo <span class="required">*</span></label>
+                            <input type="text" id="supNoturnoNome" name="supNoturnoNome" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Operador CCTV Noturno - Nr. Mec. <span class="required">*</span></label>
+                            <input type="text" id="cctvNoturnoMec" name="cctvNoturnoMec" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nome Completo <span class="required">*</span></label>
+                            <input type="text" id="cctvNoturnoNome" name="cctvNoturnoNome" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 3: RONDAS -->
+            <div class="tab-content" id="tab-rondas">
+                <!-- RONDAS GERAIS -->
+                <div class="section">
+                    <div class="section-title">🚶 RONDAS GERAIS (Piso -5 ao Piso 5)</div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Ronda</th>
+                                    <th>Horário Previsto</th>
+                                    <th>Horário Real</th>
+                                    <th>Assinatura</th>
+                                    <th>Sem Ocorrências</th>
+                                    <th>Ver Caso Nº</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>RG-01</strong></td>
+                                    <td>09:00</td>
+                                    <td><input type="time" id="rg01Hora" name="rg01Hora"></td>
+                                    <td><input type="text" id="rg01Ass" name="rg01Ass"></td>
+                                    <td class="center"><input type="checkbox" id="rg01Ok" name="rg01Ok"></td>
+                                    <td><input type="text" id="rg01Caso" name="rg01Caso" placeholder="Ex: 01"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>RG-02</strong></td>
+                                    <td>13:00</td>
+                                    <td><input type="time" id="rg02Hora" name="rg02Hora"></td>
+                                    <td><input type="text" id="rg02Ass" name="rg02Ass"></td>
+                                    <td class="center"><input type="checkbox" id="rg02Ok" name="rg02Ok"></td>
+                                    <td><input type="text" id="rg02Caso" name="rg02Caso" placeholder="Ex: 02"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>RG-03</strong></td>
+                                    <td>17:00</td>
+                                    <td><input type="time" id="rg03Hora" name="rg03Hora"></td>
+                                    <td><input type="text" id="rg03Ass" name="rg03Ass"></td>
+                                    <td class="center"><input type="checkbox" id="rg03Ok" name="rg03Ok"></td>
+                                    <td><input type="text" id="rg03Caso" name="rg03Caso" placeholder="Ex: 03"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>RG-04</strong></td>
+                                    <td>21:00</td>
+                                    <td><input type="time" id="rg04Hora" name="rg04Hora"></td>
+                                    <td><input type="text" id="rg04Ass" name="rg04Ass"></td>
+                                    <td class="center"><input type="checkbox" id="rg04Ok" name="rg04Ok"></td>
+                                    <td><input type="text" id="rg04Caso" name="rg04Caso" placeholder="Ex: 04"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- RONDAS GARAGEM -->
+                <div class="section">
+                    <div class="section-title">🚗 RONDAS GARAGEM SUBTERRÂNEA</div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Ronda</th>
+                                    <th>Horário Previsto</th>
+                                    <th>Horário Real</th>
+                                    <th>Assinatura</th>
+                                    <th>OK</th>
+                                    <th>Ver Caso Nº</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>RGar-01</strong></td>
+                                    <td>10:00</td>
+                                    <td><input type="time" id="rgar01Hora" name="rgar01Hora"></td>
+                                    <td><input type="text" id="rgar01Ass" name="rgar01Ass"></td>
+                                    <td class="center"><input type="checkbox" id="rgar01Ok" name="rgar01Ok"></td>
+                                    <td><input type="text" id="rgar01Caso" name="rgar01Caso"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>RGar-02</strong></td>
+                                    <td>14:00</td>
+                                    <td><input type="time" id="rgar02Hora" name="rgar02Hora"></td>
+                                    <td><input type="text" id="rgar02Ass" name="rgar02Ass"></td>
+                                    <td class="center"><input type="checkbox" id="rgar02Ok" name="rgar02Ok"></td>
+                                    <td><input type="text" id="rgar02Caso" name="rgar02Caso"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>RGar-03</strong></td>
+                                    <td>18:00</td>
+                                    <td><input type="time" id="rgar03Hora" name="rgar03Hora"></td>
+                                    <td><input type="text" id="rgar03Ass" name="rgar03Ass"></td>
+                                    <td class="center"><input type="checkbox" id="rgar03Ok" name="rgar03Ok"></td>
+                                    <td><input type="text" id="rgar03Caso" name="rgar03Caso"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>RGar-04</strong></td>
+                                    <td>22:00</td>
+                                    <td><input type="time" id="rgar04Hora" name="rgar04Hora"></td>
+                                    <td><input type="text" id="rgar04Ass" name="rgar04Ass"></td>
+                                    <td class="center"><input type="checkbox" id="rgar04Ok" name="rgar04Ok"></td>
+                                    <td><input type="text" id="rgar04Caso" name="rgar04Caso"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-row" style="margin-top: 20px;">
+                        <div class="form-group">
+                            <label>🚨 Veículos Mal Estacionados - Matrícula 1</label>
+                            <input type="text" id="veiculo1" name="veiculo1" placeholder="Ex: LD-00-00-AA">
+                        </div>
+                        <div class="form-group">
+                            <label>Cave</label>
+                            <input type="text" id="cave1" name="cave1" placeholder="Ex: -2">
+                        </div>
+                        <div class="form-group">
+                            <label>Matrícula 2</label>
+                            <input type="text" id="veiculo2" name="veiculo2" placeholder="Ex: LD-00-00-BB">
+                        </div>
+                        <div class="form-group">
+                            <label>Cave</label>
+                            <input type="text" id="cave2" name="cave2" placeholder="Ex: -3">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INSPEÇÕES SANITÁRIAS -->
+                <div class="section">
+                    <div class="section-title">🚽 INSPEÇÕES SANITÁRIAS (Prevenção Vasilhames)</div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Inspeção</th>
+                                    <th>Horário Previsto</th>
+                                    <th>Horário Real</th>
+                                    <th>Vasilhames Detectados</th>
+                                    <th>Recolhido</th>
+                                    <th>Ver Caso Nº</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>IS-01</strong></td>
+                                    <td>10:00</td>
+                                    <td><input type="time" id="is01Hora" name="is01Hora"></td>
+                                    <td class="center"><input type="checkbox" id="is01Detectado" name="is01Detectado"></td>
+                                    <td class="center"><input type="checkbox" id="is01Recolhido" name="is01Recolhido"></td>
+                                    <td><input type="text" id="is01Caso" name="is01Caso"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IS-02</strong></td>
+                                    <td>12:00</td>
+                                    <td><input type="time" id="is02Hora" name="is02Hora"></td>
+                                    <td class="center"><input type="checkbox" id="is02Detectado" name="is02Detectado"></td>
+                                    <td class="center"><input type="checkbox" id="is02Recolhido" name="is02Recolhido"></td>
+                                    <td><input type="text" id="is02Caso" name="is02Caso"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IS-03</strong></td>
+                                    <td>24:00</td>
+                                    <td><input type="time" id="is03Hora" name="is03Hora"></td>
+                                    <td class="center"><input type="checkbox" id="is03Detectado" name="is03Detectado"></td>
+                                    <td class="center"><input type="checkbox" id="is03Recolhido" name="is03Recolhido"></td>
+                                    <td><input type="text" id="is03Caso" name="is03Caso"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IS-04</strong></td>
+                                    <td>05:30</td>
+                                    <td><input type="time" id="is04Hora" name="is04Hora"></td>
+                                    <td class="center"><input type="checkbox" id="is04Detectado" name="is04Detectado"></td>
+                                    <td class="center"><input type="checkbox" id="is04Recolhido" name="is04Recolhido"></td>
+                                    <td><input type="text" id="is04Caso" name="is04Caso"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- RONDAS SETORIAIS -->
+                <div class="section">
+                    <div class="section-title">🏨 RONDAS SETORIAIS NOTURNAS (23h-06h30)</div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Setor</th>
+                                    <th>Ronda 1</th>
+                                    <th>Presente</th>
+                                    <th>Ronda 2</th>
+                                    <th>Presente</th>
+                                    <th>Caso Nº</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Lavandaria</strong></td>
+                                    <td><input type="time" id="lavR1" name="lavR1"></td>
+                                    <td class="center"><input type="checkbox" id="lavR1P" name="lavR1P"></td>
+                                    <td><input type="time" id="lavR2" name="lavR2"></td>
+                                    <td class="center"><input type="checkbox" id="lavR2P" name="lavR2P"></td>
+                                    <td><input type="text" id="lavCaso" name="lavCaso"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Room Service</strong></td>
+                                    <td><input type="time" id="rsR1" name="rsR1"></td>
+                                    <td class="center"><input type="checkbox" id="rsR1P" name="rsR1P"></td>
+                                    <td><input type="time" id="rsR2" name="rsR2"></td>
+                                    <td class="center"><input type="checkbox" id="rsR2P" name="rsR2P"></td>
+                                    <td><input type="text" id="rsCaso" name="rsCaso"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Lobby Bar</strong></td>
+                                    <td><input type="time" id="lbR1" name="lbR1"></td>
+                                    <td class="center"><input type="checkbox" id="lbR1P" name="lbR1P"></td>
+                                    <td><input type="time" id="lbR2" name="lbR2"></td>
+                                    <td class="center"><input type="checkbox" id="lbR2P" name="lbR2P"></td>
+                                    <td><input type="text" id="lbCaso" name="lbCaso"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cozinha</strong></td>
+                                    <td><input type="time" id="cozR1" name="cozR1"></td>
+                                    <td class="center"><input type="checkbox" id="cozR1P" name="cozR1P"></td>
+                                    <td><input type="time" id="cozR2" name="cozR2"></td>
+                                    <td class="center"><input type="checkbox" id="cozR2P" name="cozR2P"></td>
+                                    <td><input type="text" id="cozCaso" name="cozCaso"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Recepção</strong></td>
+                                    <td><input type="time" id="recR1" name="recR1"></td>
+                                    <td class="center"><input type="checkbox" id="recR1P" name="recR1P"></td>
+                                    <td><input type="time" id="recR2" name="recR2"></td>
+                                    <td class="center"><input type="checkbox" id="recR2P" name="recR2P"></td>
+                                    <td><input type="text" id="recCaso" name="recCaso"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 4: OCORRÊNCIAS -->
+            <div class="tab-content" id="tab-ocorrencias">
+                <div class="section">
+                    <div class="section-title">🔍 REGISTRO DE OCORRÊNCIAS</div>
+                    
+                    <div class="severity-legend">
+                        <p><strong>Classificação de Severidade:</strong></p>
+                        <div class="severity-badges">
+                            <span class="severity-badge s1">S1 - Crítico</span>
+                            <span class="severity-badge s2">S2 - Alto</span>
+                            <span class="severity-badge s3">S3 - Médio</span>
+                            <span class="severity-badge s4">S4 - Baixo</span>
+                            <span class="severity-badge s5">S5 - Informativo</span>
+                        </div>
+                    </div>
+
+                    <!-- CASO 01 -->
+                    <div class="incident-card">
+                        <div class="incident-header">
+                            <h3>📝 CASO 01</h3>
+                            <div class="severity-selector">
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso01Sev" value="s1">
+                                    <span class="badge s1">S1</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso01Sev" value="s2">
+                                    <span class="badge s2">S2</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso01Sev" value="s3">
+                                    <span class="badge s3">S3</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso01Sev" value="s4">
+                                    <span class="badge s4">S4</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso01Sev" value="s5">
+                                    <span class="badge s5">S5</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Horário</label>
+                                <input type="time" id="caso01Hora" name="caso01Hora">
+                            </div>
+                            <div class="form-group">
+                                <label>Local</label>
+                                <input type="text" id="caso01Local" name="caso01Local" placeholder="Ex: Garagem Cave -2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição Detalhada</label>
+                            <textarea id="caso01Desc" name="caso01Desc" rows="4" placeholder="Descreva o incidente: Quem, O quê, Quando, Onde, Como..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Ação Tomada</label>
+                            <textarea id="caso01Acao" name="caso01Acao" rows="3" placeholder="Descreva as medidas tomadas para resolver a situação..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Responsável</label>
+                                <input type="text" id="caso01Resp" name="caso01Resp">
+                            </div>
+                            <div class="form-group">
+                                <label>Assinatura</label>
+                                <input type="text" id="caso01Ass" name="caso01Ass">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CASO 02 -->
+                    <div class="incident-card">
+                        <div class="incident-header">
+                            <h3>📝 CASO 02</h3>
+                            <div class="severity-selector">
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso02Sev" value="s1">
+                                    <span class="badge s1">S1</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso02Sev" value="s2">
+                                    <span class="badge s2">S2</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso02Sev" value="s3">
+                                    <span class="badge s3">S3</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso02Sev" value="s4">
+                                    <span class="badge s4">S4</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso02Sev" value="s5">
+                                    <span class="badge s5">S5</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Horário</label>
+                                <input type="time" id="caso02Hora" name="caso02Hora">
+                            </div>
+                            <div class="form-group">
+                                <label>Local</label>
+                                <input type="text" id="caso02Local" name="caso02Local" placeholder="Ex: Lobby Principal">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição Detalhada</label>
+                            <textarea id="caso02Desc" name="caso02Desc" rows="4" placeholder="Descreva o incidente..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Ação Tomada</label>
+                            <textarea id="caso02Acao" name="caso02Acao" rows="3" placeholder="Descreva as medidas tomadas..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Responsável</label>
+                                <input type="text" id="caso02Resp" name="caso02Resp">
+                            </div>
+                            <div class="form-group">
+                                <label>Assinatura</label>
+                                <input type="text" id="caso02Ass" name="caso02Ass">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CASO 03 -->
+                    <div class="incident-card">
+                        <div class="incident-header">
+                            <h3>📝 CASO 03</h3>
+                            <div class="severity-selector">
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso03Sev" value="s1">
+                                    <span class="badge s1">S1</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso03Sev" value="s2">
+                                    <span class="badge s2">S2</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso03Sev" value="s3">
+                                    <span class="badge s3">S3</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso03Sev" value="s4">
+                                    <span class="badge s4">S4</span>
+                                </label>
+                                <label class="radio-badge">
+                                    <input type="radio" name="caso03Sev" value="s5">
+                                    <span class="badge s5">S5</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Horário</label>
+                                <input type="time" id="caso03Hora" name="caso03Hora">
+                            </div>
+                            <div class="form-group">
+                                <label>Local</label>
+                                <input type="text" id="caso03Local" name="caso03Local" placeholder="Ex: Piso 3">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição Detalhada</label>
+                            <textarea id="caso03Desc" name="caso03Desc" rows="4" placeholder="Descreva o incidente..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Ação Tomada</label>
+                            <textarea id="caso03Acao" name="caso03Acao" rows="3" placeholder="Descreva as medidas tomadas..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Responsável</label>
+                                <input type="text" id="caso03Resp" name="caso03Resp">
+                            </div>
+                            <div class="form-group">
+                                <label>Assinatura</label>
+                                <input type="text" id="caso03Ass" name="caso03Ass">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 5: CONTROLES -->
+            <div class="tab-content" id="tab-controles">
+                <!-- CONTROLE DE DORMITÓRIOS -->
+                <div class="section">
+                    <div class="section-title">🛏️ CONTROLE DE DORMITÓRIOS</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Ronda Noturna 01 (24h-05h30)</label>
+                            <input type="time" id="dormR1" name="dormR1">
+                        </div>
+                        <div class="form-group">
+                            <label>Assinatura</label>
+                            <input type="text" id="dormR1Ass" name="dormR1Ass">
+                        </div>
+                        <div class="form-group">
+                            <label>Ronda Noturna 02 (24h-05h30)</label>
+                            <input type="time" id="dormR2" name="dormR2">
+                        </div>
+                        <div class="form-group">
+                            <label>Assinatura</label>
+                            <input type="text" id="dormR2Ass" name="dormR2Ass">
+                        </div>
+                    </div>
+                    
+                    <h4 style="margin: 20px 0 10px 0; color: #667eea;">Registro de Uso (Somente com Autorização)</h4>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Gênero</th>
+                                    <th>Nome</th>
+                                    <th>Seção</th>
+                                    <th>Horário Entrada</th>
+                                    <th>Autorizado por</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select id="dorm1Gen" name="dorm1Gen">
+                                            <option value="">-</option>
+                                            <option value="M">M</option>
+                                            <option value="F">F</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" id="dorm1Nome" name="dorm1Nome"></td>
+                                    <td><input type="text" id="dorm1Sec" name="dorm1Sec"></td>
+                                    <td><input type="time" id="dorm1Hora" name="dorm1Hora"></td>
+                                    <td><input type="text" id="dorm1Aut" name="dorm1Aut"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select id="dorm2Gen" name="dorm2Gen">
+                                            <option value="">-</option>
+                                            <option value="M">M</option>
+                                            <option value="F">F</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" id="dorm2Nome" name="dorm2Nome"></td>
+                                    <td><input type="text" id="dorm2Sec" name="dorm2Sec"></td>
+                                    <td><input type="time" id="dorm2Hora" name="dorm2Hora"></td>
+                                    <td><input type="text" id="dorm2Aut" name="dorm2Aut"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select id="dorm3Gen" name="dorm3Gen">
+                                            <option value="">-</option>
+                                            <option value="M">M</option>
+                                            <option value="F">F</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" id="dorm3Nome" name="dorm3Nome"></td>
+                                    <td><input type="text" id="dorm3Sec" name="dorm3Sec"></td>
+                                    <td><input type="time" id="dorm3Hora" name="dorm3Hora"></td>
+                                    <td><input type="text" id="dorm3Aut" name="dorm3Aut"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="form-row" style="margin-top: 20px;">
+                        <div class="form-group">
+                            <label>Chave está na Recepção?</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="chaveRec" value="sim">
+                                    <span>Sim</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="chaveRec" value="nao">
+                                    <span>Não</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Se não, está com (Nome/Seção)</label>
+                            <input type="text" id="chavePosse" name="chavePosse" placeholder="Nome e Seção">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTROLE DE REFEITÓRIO -->
+                <div class="section">
+                    <div class="section-title">🍽️ CONTROLE DE REFEITÓRIO</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Jantar - Horário Previsto: 20h15</label>
+                            <input type="time" id="jantarHora" name="jantarHora">
+                        </div>
+                        <div class="form-group">
+                            <label>Ceia - Previsto: 01h00-02h00</label>
+                            <input type="time" id="ceiaHora" name="ceiaHora">
+                        </div>
+                    </div>
+                    
+                    <h4 style="margin: 20px 0 10px 0; color: #667eea;">Trabalhadores no Refeitório Após 20h15</h4>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Seção</th>
+                                    <th>Nome</th>
+                                    <th>Seção</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" id="ref1Nome" name="ref1Nome"></td>
+                                    <td><input type="text" id="ref1Sec" name="ref1Sec"></td>
+                                    <td><input type="text" id="ref2Nome" name="ref2Nome"></td>
+                                    <td><input type="text" id="ref2Sec" name="ref2Sec"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="ref3Nome" name="ref3Nome"></td>
+                                    <td><input type="text" id="ref3Sec" name="ref3Sec"></td>
+                                    <td><input type="text" id="ref4Nome" name="ref4Nome"></td>
+                                    <td><input type="text" id="ref4Sec" name="ref4Sec"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- CHECKLIST EQUIPAMENTOS -->
+                <div class="section">
+                    <div class="section-title">✅ CHECKLIST DE EQUIPAMENTOS</div>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" id="checkRadios" name="checkRadios"> 📻 Rádios carregados e funcionais</label>
+                        <label class="checkbox-item"><input type="checkbox" id="checkLanternas" name="checkLanternas"> 🔦 Lanternas operacionais</label>
+                        <label class="checkbox-item"><input type="checkbox" id="checkCctv" name="checkCctv"> 📹 Sistema CCTV sem falhas</label>
+                        <label class="checkbox-item"><input type="checkbox" id="checkPortas" name="checkPortas"> 🚪 Portas de emergência destrancadas</label>
+                        <label class="checkbox-item"><input type="checkbox" id="checkIlum" name="checkIlum"> 💡 Iluminação perimetral funcional</label>
+                    </div>
+                </div>
+
+                <!-- OBSERVAÇÕES FINAIS -->
+                <div class="section">
+                    <div class="section-title">📝 OBSERVAÇÕES E PENDÊNCIAS</div>
+                    <div class="form-group">
+                        <label>Outras Observações Importantes</label>
+                        <textarea id="obsGerais" name="obsGerais" placeholder="Registre aqui qualquer informação adicional relevante..." style="min-height: 100px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Pendências para Próximo Turno</label>
+                        <textarea id="pendencias" name="pendencias" placeholder="Liste as pendências que devem ser acompanhadas pelo próximo turno..." style="min-height: 80px;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 6: APROVAÇÕES -->
+            <div class="tab-content" id="tab-aprovacoes">
+                <div class="section">
+                    <div class="section-title">✍️ APROVAÇÕES E ASSINATURAS</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Chefe de Equipa - Nome</label>
+                            <input type="text" id="aprovChefeNome" name="aprovChefeNome">
+                        </div>
+                        <div class="form-group">
+                            <label>Assinatura</label>
+                            <input type="text" id="aprovChefeAss" name="aprovChefeAss">
+                        </div>
+                        <div class="form-group">
+                            <label>Horário</label>
+                            <input type="time" id="aprovChefeHora" name="aprovChefeHora">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Supervisor Serviço Interno - Nome</label>
+                            <input type="text" id="aprovSupNome" name="aprovSupNome">
+                        </div>
+                        <div class="form-group">
+                            <label>Assinatura</label>
+                            <input type="text" id="aprovSupAss" name="aprovSupAss">
+                        </div>
+                        <div class="form-group">
+                            <label>Horário</label>
+                            <input type="time" id="aprovSupHora" name="aprovSupHora">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- NAVEGAÇÃO ENTRE ABAS -->
+        <div class="tab-navigation-buttons">
+            <button type="button" class="nav-btn btn-prev" id="btnPrev">
+                ← Anterior
+            </button>
+            <button type="button" class="nav-btn btn-next" id="btnNext">
+                Próxima →
+            </button>
+        </div>
+
+        <!-- BOTÕES DE AÇÃO -->
+        <div class="button-group">
+            <button type="button" class="btn-save" id="btnSave">
+                💾 Salvar Dados
+            </button>
+            <button type="button" class="btn-print" id="btnPrint">
+                📄 Gerar PDF
+            </button>
+            <button type="button" class="btn-clear" id="btnClear">
+                🗑️ Limpar Formulário
+            </button>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p><strong>Instruções:</strong> Preencha todos os campos obrigatórios marcados com *. Use Ctrl+S para salvar ou Ctrl+P para gerar PDF.</p>
+            <p>Modelo Op.110.02 | Versão Digital 3.0 | © 2025 Sistema de Gestão de Segurança</p>
+        </div>
+    </div>
+
+    <!-- Template das Abas (será injetado via JavaScript) -->
+    <template id="templateIdentificacao">
+        <div class="tab-content active" id="tab-identificacao">
+            <div class="section">
+                <div class="section-title">📋 IDENTIFICAÇÃO DO RELATÓRIO</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data <span class="required">*</span></label>
+                        <input type="date" id="dataRelatorio" name="dataRelatorio" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Dia da Semana <span class="auto-calc">(Auto)</span></label>
+                        <input type="text" id="diaSemana" name="diaSemana" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Turno <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="turno" value="diurno" required>
+                                <span>☀️ Diurno (07h-19h)</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="turno" value="noturno">
+                                <span>🌙 Noturno (19h-07h)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Condições Climáticas <span class="required">*</span></label>
+                        <select id="clima" name="clima" required>
+                            <option value="">Selecione...</option>
+                            <option value="bom">☀️ Bom</option>
+                            <option value="chuva">🌧️ Chuva</option>
+                            <option value="nublado">☁️ Nublado</option>
+                            <option value="vento">💨 Vento Forte</option>
+                            <option value="outros">🌤️ Outros</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="script_v3.js"></script>
+</body>
+</html>
