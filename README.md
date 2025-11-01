@@ -216,10 +216,10 @@ MIT License - Uso livre para fins comerciais e não comerciais.
 
 ## 📞 Contato
 
-- 📧 **Email**: [seu-email@dominio.com]
-- 💬 **Discord**: [seu-servidor]
-- 📱 **WhatsApp**: [seu-número]
-- 🌐 **Website**: [seu-site]
+- 📧 **Email**: [lucianoamos@gmail.com](mailto:lucianoamos@gmail.com)
+- 💬 **Discord**: [lucianoamos](https://discord.com/users/lucianoamos)
+- 📱 **WhatsApp**: [+244 942 479 552](https://wa.me/244942479552)
+- 🌐 **Website**: [lucianoamos.com](https://lucianoamos.com)
 
 ---
 
