@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Segurança - Relatório v3.0</title>
+    <link rel="stylesheet" href="styles_v3.css">
+    <link rel="stylesheet" href="dashboard_styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>📊 DASHBOARD DE SEGURANÇA</h1>
+            <p>Análise Consolidada de Relatórios - Versão 3.0</p>
+        </div>
+
+        <!-- NAVEGAÇÃO -->
+        <div class="dashboard-nav">
+            <button class="nav-btn active" data-view="overview">
+                <span>📈</span> Visão Geral
+            </button>
+            <button class="nav-btn" data-view="historico">
+                <span>📋</span> Histórico
+            </button>
+            <button class="nav-btn" data-view="analise">
+                <span>📊</span> Análise Detalhada
+            </button>
+            <button class="nav-btn" data-view="relatorio">
+                <span>🛡️</span> Novo Relatório
+            </button>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label>Período:</label>
+                <select id="filterPeriod">
+                    <option value="semana">Semana Atual</option>
+                    <option value="mes">Mês Atual</option>
+                    <option value="trimestre">Trimestre</option>
+                    <option value="ano">Ano</option>
+                    <option value="custom">Personalizado</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Severidade:</label>
+                <select id="filterSeveridade">
+                    <option value="">Todas</option>
+                    <option value="s1">S1 - Crítico</option>
+                    <option value="s2">S2 - Alto</option>
+                    <option value="s3">S3 - Médio</option>
+                    <option value="s4">S4 - Baixo</option>
+                    <option value="s5">S5 - Informativo</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Local:</label>
+                <select id="filterLocal">
+                    <option value="">Todos</option>
+                    <option value="piso-5">Piso -5</option>
+                    <option value="piso-4">Piso -4</option>
+                    <option value="piso-3">Piso -3</option>
+                    <option value="piso-2">Piso -2</option>
+                    <option value="piso-1">Piso -1</option>
+                    <option value="piso0">Piso 0</option>
+                    <option value="piso1">Piso 1</option>
+                    <option value="piso2">Piso 2</option>
+                    <option value="piso3">Piso 3</option>
+                    <option value="piso4">Piso 4</option>
+                    <option value="piso5">Piso 5</option>
+                    <option value="garagem">Garagem</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Responsável:</label>
+                <input type="text" id="filterResponsavel" placeholder="Nome do responsável">
+            </div>
+
+            <button class="btn-filter" onclick="aplicarFiltros()">🔍 Filtrar</button>
+            <button class="btn-reset" onclick="limparFiltros()">🔄 Limpar</button>
+        </div>
+
+        <!-- VIEW: OVERVIEW (PAINEL PRINCIPAL) -->
+        <div class="view-content active" id="view-overview">
+            <!-- KPIs -->
+            <div class="kpis-container">
+                <div class="kpi-card">
+                    <div class="kpi-icon">📋</div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Total de Relatórios</div>
+                        <div class="kpi-value" id="kpiTotalRelatorios">0</div>
+                        <div class="kpi-change" id="kpiTotalChange">↑ 0%</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon">⚠️</div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Total de Ocorrências</div>
+                        <div class="kpi-value" id="kpiTotalOcorrencias">0</div>
+                        <div class="kpi-change" id="kpiOcorrenciasChange">↑ 0%</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card critical">
+                    <div class="kpi-icon">🔴</div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Críticos (S1)</div>
+                        <div class="kpi-value" id="kpiCriticos">0</div>
+                        <div class="kpi-change" id="kpiCriticosChange">↑ 0%</div>
+                    </div>
+                </div>
+
+                <div class="kpi-card warning">
+                    <div class="kpi-icon">🟠</div>
+                    <div class="kpi-content">
+                        <div class="kpi-label">Altos (S2)</div>
+                        <div class="kpi-value" id="kpiAltos">0</div>
+                        <div class="kpi-change" id="kpiAltosChange">↑ 0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRÁFICOS -->
+            <div class="charts-container">
+                <!-- Gráfico de Linha: Tendências -->
+                <div class="chart-card">
+                    <h3>📈 Tendências de Segurança</h3>
+                    <canvas id="chartTendencias"></canvas>
+                </div>
+
+                <!-- Gráfico de Pizza: Distribuição por Severidade -->
+                <div class="chart-card">
+                    <h3>🥧 Distribuição por Severidade</h3>
+                    <canvas id="chartSeveridade"></canvas>
+                </div>
+            </div>
+
+            <!-- ALERTAS CRÍTICOS -->
+            <div class="alerts-section">
+                <h3>🚨 Alertas Críticos em Destaque</h3>
+                <div class="alerts-container" id="alertasContainer">
+                    <p class="no-data">Nenhum alerta crítico no período</p>
+                </div>
+            </div>
+
+            <!-- RESUMO DIÁRIO -->
+            <div class="daily-summary">
+                <h3>📅 Resumo por Dia</h3>
+                <div class="daily-table" id="dailyTable">
+                    <p class="no-data">Nenhum dado disponível</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: HISTÓRICO -->
+        <div class="view-content" id="view-historico">
+            <div class="historico-section">
+                <h2>📋 Histórico de Relatórios</h2>
+                
+                <div class="historico-filters">
+                    <input type="text" id="searchRelatorio" placeholder="🔍 Buscar por data, responsável...">
+                    <select id="sortRelatorio">
+                        <option value="recente">Mais Recente</option>
+                        <option value="antigo">Mais Antigo</option>
+                        <option value="ocorrencias">Mais Ocorrências</option>
+                    </select>
+                </div>
+
+                <div class="historico-list" id="historicoList">
+                    <p class="no-data">Nenhum relatório encontrado</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: ANÁLISE DETALHADA -->
+        <div class="view-content" id="view-analise">
+            <div class="analise-section">
+                <h2>📊 Análise Detalhada</h2>
+                
+                <!-- Gráficos Adicionais -->
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>📊 Ocorrências por Local</h3>
+                        <canvas id="chartLocal"></canvas>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>👤 Ocorrências por Responsável</h3>
+                        <canvas id="chartResponsavel"></canvas>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>⏰ Distribuição por Turno</h3>
+                        <canvas id="chartTurno"></canvas>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>📈 Evolução Temporal</h3>
+                        <canvas id="chartEvolucao"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tabela Detalhada -->
+                <div class="detailed-table-section">
+                    <h3>📋 Tabela Detalhada de Ocorrências</h3>
+                    <div class="table-responsive">
+                        <table class="data-table" id="tabelaDetalhada">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Severidade</th>
+                                    <th>Local</th>
+                                    <th>Descrição</th>
+                                    <th>Responsável</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaDetalhadaBody">
+                                <tr>
+                                    <td colspan="6" class="no-data">Nenhum dado disponível</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: NOVO RELATÓRIO -->
+        <div class="view-content" id="view-relatorio">
+            <div class="relatorio-redirect">
+                <h2>🛡️ Criar Novo Relatório</h2>
+                <p>Você será redirecionado para o formulário de relatório...</p>
+                <button class="btn-primary" onclick="irParaRelatorio()">
+                    ➡️ Ir para Relatório
+                </button>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>Dashboard de Segurança v3.0 | Última atualização: <span id="lastUpdate">--:--</span></p>
+            <p>© 2025 Relatório Digital de Segurança - Todos os direitos reservados</p>
+        </div>
+    </div>
+
+    <script src="dashboard_script.js"></script>
+</body>
+</html>
